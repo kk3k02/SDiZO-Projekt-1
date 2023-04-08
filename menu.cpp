@@ -1,4 +1,12 @@
-#include<conio.h>
+/*
+ * Autor: Jakub Jakubowicz
+ * Data: Kwiecien 2023
+ * Plik: menu.cpp
+ *
+ * Opis: Klasa definiujaca menu glowne
+ * sluzace do sterowania programem.
+ */
+
 #include<string>
 #include<iostream>
 #include "table.h"
