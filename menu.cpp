@@ -208,9 +208,8 @@ void menu_heap() // Menu do zarzadzania kopcem
                 cout << "\nPodaj szukana wartosc: ";
                 cin >> value;
                 cout << endl << endl;
-                // TODO NAPRAWIC SPRAWDZANIE WARTOSCI W KOPCU BINARNYM
-//                if (heap::IsValueInHeap != -1) cout << "Podana wartosc znajduje sie w kopcu binarnym.";
-//                else cout << "Podana wartosc NIE znajduje sie w kopcu binarnym.";
+                if (myHeap.IsValueInHeap(value)) cout << "Podana wartosc znajduje sie w kopcu binarnym.";
+                else cout << "Podana wartosc NIE znajduje sie w kopcu binarnym.";
                 cout << endl << endl;
                 break;
             case 5: // Generowanie kopca binarnego o podanym rozmiarze wypelnionego pseudolosowymi liczbami

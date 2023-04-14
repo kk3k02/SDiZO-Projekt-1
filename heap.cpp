@@ -41,7 +41,9 @@ void heap::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
 }
 
 bool heap::IsValueInHeap(int value){ // Sprawdzanie czy podana wartosc znajduje sie w kopcu binarnym
-    // TODO SPRAWDZANIE CZY ELEMENT ZNAJDUJE SIE W KOPCU
+    for (int i = 0; i < size; i++) {
+        if (tab[i] == value) return true;
+    }
     return false;
 }
 
