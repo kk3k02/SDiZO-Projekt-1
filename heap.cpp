@@ -46,7 +46,6 @@ bool heap::IsValueInHeap(int value){ // Sprawdzanie czy podana wartosc znajduje 
 }
 
 void heap::push(int val){ // Dodawanie elementu do kopca binarnego
-    // TODO DODAWANIE ELEMENTU DO KOPCA
     size++; // Zwiekszenie ilosci elementow w tablicy
 
     int *tmp; // Deklaracja tymczasowej tablicy dynamicznej
@@ -73,7 +72,6 @@ void heap::pop() { // Usuwanie korzenia kopca binarnego
 }
 
 void heap::display(){ // Wyswietlanie kopca binarnego
-    // TODO WYSWIETLANIE KOPCA
     if (size > 0){
         for (int i = 0; i < size; i++) {
             cout << "[" << i << "]: " << tab[i] << endl;
