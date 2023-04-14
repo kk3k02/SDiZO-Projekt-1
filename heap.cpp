@@ -70,7 +70,23 @@ void heap::push(int val){ // Dodawanie elementu do kopca binarnego
 }
 
 void heap::pop() { // Usuwanie korzenia kopca binarnego
-    // TODO USUWANIE KORZENIA KOPCA
+    size--; // Zmniejszenie ilosci elementow kopca
+
+    int *tmp; // Deklaracja tymczasowej tablicy do przechowywania elementow kopca
+    tmp = new int[size];
+
+    for (int i = 0; i < size; i++) { // Kopiowanie elementow kopca do tablicy tymczasowej
+        if (i == 0){
+            tmp[i] = tab[size]; // Zastepowanie korzenia ostatnim lisciem
+        } else{
+            tmp[i] = tab[i];
+        }
+    }
+
+    delete[] tab; // Usuwanie starej tablicy w celu utworzenia nowej o zmniejszonym rozmiarze
+    tab = tmp;
+
+    repairHeap(); // Naprawianie kopca
 }
 
 void heap::display(){ // Wyswietlanie kopca binarnego
