@@ -48,49 +48,52 @@ bool heap::IsValueInHeap(int value){ // Sprawdzanie czy podana wartosc znajduje 
 }
 
 void heap::push(int val){ // Dodawanie elementu do kopca binarnego
-    size++; // Zwiekszenie ilosci elementow w tablicy
+    if (size == 0){ // Wariant, w ktorym kopiec jest pusty i dodajemy element na poczatek
+        size++;
+        tab = new int[size];
+        tab[0] = val;
+    } else{ // Wariant, w ktorym kopiec nie jest pusty i dodajemy element jako ostatniego liscia
+       int *tmp; // Tymczasowa tablica do przechowywania wartosci kopca powiekszona o 1
+       tmp = new int[size+1];
 
-    int *tmp; // Deklaracja tymczasowej tablicy dynamicznej
-    tmp = new int[size];
-
-    for (int i = 0; i < size; i++) { // Kopiowanie zawartosci glownej tablicy do tymczasowej
-        if (i == (size-1)){
-            tmp[i] = val;
-        } else{
+        for (int i = 0; i < size; i++) {
             tmp[i] = tab[i];
         }
+
+        tmp[size] = val; // Dodanie elementu o podanej wartosci na sam koniec kopca
+
+        size++; // Inkrementacja liczby elementow w kopcu
+
+        delete[] tab; // Usuwanie starej tablicy w celu stworzenia nowej powiekszonej
+
+        tab = tmp;
     }
 
-    delete[] tab; // Usuwanie starej tablicy w celu stworzenia nowej o zwiekszonym rozmiarze
-
-    tab = tmp;
-
-    repairHeap(); // Naprawa kopca
-    cout << "Element zostal dodany do kopca." << endl << endl;
+    repairHeap(1); // Naprawa kopca
 }
 
 void heap::pop() { // Usuwanie korzenia kopca binarnego
     if (size > 0){
-        size--; // Zmniejszenie ilosci elementow kopca
+        int *tmp; // Tymczasowa tablica do przechowywania wartosci kopca
+        int root; // Zmienna do przechowywania wartosci korzenia
 
-        int *tmp; // Deklaracja tymczasowej tablicy do przechowywania elementow kopca
+        root = tab[size - 1]; // Przypisanie zmiennej wartosci ostatniego liscia w kopcu
+
+        size--; // Dekrementacja ilosci elementow w kopcu
+
         tmp = new int[size];
 
-        for (int i = 0; i < size; i++) { // Kopiowanie elementow kopca do tablicy tymczasowej
-            if (i == 0){
-                tmp[i] = tab[size]; // Zastepowanie korzenia ostatnim lisciem
-            } else{
-                tmp[i] = tab[i];
-            }
+        tmp[0] = root; // Przypisanie wartosci korzenia do tablicy tymczasowej
+
+        for (int i = 1; i < size; ++i) {
+            tmp[i] = tab[i];
         }
 
-        delete[] tab; // Usuwanie starej tablicy w celu utworzenia nowej o zmniejszonym rozmiarze
+        delete[] tab; // Usuwanie starej tablicy w celu stworzenia nowej o zwiekszonym rozmiarze
         tab = tmp;
 
-        repairHeap(); // Naprawianie kopca
+        repairHeap(2);
 
-        cout << endl << endl;
-        cout << "Korzen kopca zostal usuniety." << endl << endl;
     } else{
         cerr << "\nBrak elementow w kopcu binarnym." << endl << endl;
     }
@@ -106,27 +109,61 @@ void heap::display(){ // Wyswietlanie kopca binarnego
     }
 }
 
-void heap::generateHeap(int size){ // Generowanie kopca binarnego o podanym rozmiarze
-    if (size > 0){
-        delete[] tab; // Usuwanie starej tablicy dynamicznej
-        this->size = size; // Ustawianie nowej ilosci elementow
-
-        tab = new int[size]; // Tworzenie tablicy dynamicznej o podanym rozmiarze
+void heap::generateHeap(int sizeToGenerate){ // Generowanie kopca binarnego o podanym rozmiarze
+    if (sizeToGenerate > 0){
+        if (size > 0){ // Usuwanie starego kopca
+            delete[] tab; // Usuwanie starej tablicy dynamicznej
+            size = 0; // Ustawianie liczby elementow kopca na 0
+        }
 
         srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
 
-        for (int i = 0; i < size; i++) { // Wypelnianie tablicy losowymi liczbami
-            tab[i] = rand();
+        for (int i = 0; i < sizeToGenerate; i++) { // Wypelnianie tablicy losowymi liczbami
+            push(rand());
         }
 
         cout << "Kopiec zostal utworzony." << endl << endl;
     } else {
         cerr << "Podany rozmiar jest nieprawidlowy." << endl << endl;
     }
-
-    repairHeap(); // Naprawianie kopca
 }
 
-void heap::repairHeap(){ // Naprawianie struktury, tak aby spelniala warunki kopca binarnego
+void heap::repairHeap(int option){ // Naprawianie struktury, tak aby spelniala warunki kopca binarnego
     // TODO NAPRAWA KOPCA
+    // Opcja [1] to naprawianie po dodawaniu elementu jako ostatni lisc
+    // Opcja [2] to naprawianie po usuwaniu korzenia
+
+    if (size > 0){
+        if (option == 1){ // Naprawianie po dodawaniu na koniec kopca
+            int parent = 1; // Zmienna przechowujaca indeks rodzica
+            int counter = size - 1; // Licznik do petli while
+            int tmp; // Zmienna do przechowywania przenoszonych wartosci z kopca
+
+            if (size > 1){
+                while (parent){
+                    if (counter % 2 == 0){
+                        parent = (counter / 2) - 1;
+                    } else{
+                        parent = counter / 2;
+                    }
+
+                    if (tab[counter] > tab[parent]){
+                        tmp = tab[parent];
+                        tab[parent] = tab[counter];
+                        tab[counter] = tmp;
+
+                        counter = parent;
+                    } else{
+                        break; // Wychodzenie z petli jesli warunek kopca jest spelniony po dodaniu elementu
+                    }
+                }
+            }
+        } else if (option == 2){ // Naprawianie kopca po usuwaniu korzenia
+            int child1, child2; // Zmienne sluzace do przechowywania wartosci dzieci potomkow
+
+
+        }
+    } else{
+        cerr << "Kopiec jest pusty." << endl << endl;
+    }
 }

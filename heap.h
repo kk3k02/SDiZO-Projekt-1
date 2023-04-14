@@ -34,9 +34,9 @@ public:
 
     void display(); // Wyswietlanie kopca binarnego
 
-    void generateHeap(int size); // Generowanie kopca binarnego o podanym rozmiarze
+    void generateHeap(int sizeToGenerate); // Generowanie kopca binarnego o podanym rozmiarze
 
-    void repairHeap(); // Naprawianie struktury, tak aby spelniala warunki kopca binarnego
+    void repairHeap(int option); // Naprawianie struktury, tak aby spelniala warunki kopca binarnego
 };
 
 
