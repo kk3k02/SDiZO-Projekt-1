@@ -82,7 +82,24 @@ void heap::display(){ // Wyswietlanie kopca binarnego
 }
 
 void heap::generateHeap(int size){ // Generowanie kopca binarnego o podanym rozmiarze
-    // TODO GENEROWANIE LOSOWEGO KOPCA
+    if (size > 0){
+        delete[] tab; // Usuwanie starej tablicy dynamicznej
+        this->size = size; // Ustawianie nowej ilosci elementow
+
+        tab = new int[size]; // Tworzenie tablicy dynamicznej o podanym rozmiarze
+
+        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+
+        for (int i = 0; i < size; i++) { // Wypelnianie tablicy losowymi liczbami
+            tab[i] = rand();
+        }
+
+        cout << "Kopiec zostal utworzony." << endl << endl;
+    } else {
+        cerr << "Podany rozmiar jest nieprawidlowy." << endl << endl;
+    }
+
+    repairHeap(); // Naprawianie kopca
 }
 
 void heap::repairHeap(){ // Naprawianie struktury, tak aby spelniala warunki kopca binarnego
