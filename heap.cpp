@@ -14,15 +14,13 @@
 
 using namespace std;
 
-heap::heap() {
-    tab = nullptr;
-    size = 0;
+heap::heap() { // Konstruktor kopca binarnego
+    tab = nullptr; // Ustawianie poczatkowej wartosci tablicy na NULL
+    size = 0; // Ustawianie rozmiaru kopca na 0
 }
 
-heap::~heap() {
-    if (size > 0) {
-        delete[] tab;
-    }
+heap::~heap() { // Destruktor kopca binarnego
+    delete[] tab;
     cout << "Pamiec kopca zostala zwolniona." << endl << endl;
 }
 
@@ -49,6 +47,25 @@ bool heap::IsValueInHeap(int value){ // Sprawdzanie czy podana wartosc znajduje 
 
 void heap::push(int val){ // Dodawanie elementu do kopca binarnego
     // TODO DODAWANIE ELEMENTU DO KOPCA
+    size++; // Zwiekszenie ilosci elementow w tablicy
+
+    int *tmp; // Deklaracja tymczasowej tablicy dynamicznej
+    tmp = new int[size];
+
+    for (int i = 0; i < size; i++) { // Kopiowanie zawartosci glownej tablicy do tymczasowej
+        if (i == (size-1)){
+            tmp[i] = val;
+        } else{
+            tmp[i] = tab[i];
+        }
+    }
+
+    delete[] tab; // Usuwanie starej tablicy w celu stworzenia nowej o zwiekszonym rozmiarze
+
+    tab = tmp;
+
+    repairHeap(); // Naprawa kopca
+    cout << "Element zostal dodany do kopca." << endl << endl;
 }
 
 void heap::pop() { // Usuwanie korzenia kopca binarnego
@@ -57,6 +74,13 @@ void heap::pop() { // Usuwanie korzenia kopca binarnego
 
 void heap::display(){ // Wyswietlanie kopca binarnego
     // TODO WYSWIETLANIE KOPCA
+    if (size > 0){
+        for (int i = 0; i < size; i++) {
+            cout << "[" << i << "]: " << tab[i] << endl;
+        }
+    } else{
+        cerr << "\nBrak elementow w kopcu." << endl << endl;
+    }
 }
 
 void heap::generateHeap(int size){ // Generowanie kopca binarnego o podanym rozmiarze
