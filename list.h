@@ -14,6 +14,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include "test.h"
 
 using namespace std;
 
@@ -30,15 +31,17 @@ public:
 
     static int IsValueInList(int value); // Sprawdzanie czy podana wartosc znajduje sie w liscie
 
-    static void addElement(int val, int opt); // Dodawanie elementu o podanej wartosci
+    static void addElement(int val, int opt, int index); // Dodawanie elementu o podanej wartosci
 
-    static void deleteElement(int opt); // Usuwanie elementu z listy
+    static void deleteElement(int opt, int index); // Usuwanie elementu z listy
 
     static void display(); // Wyswietlanie wszystkich elementow listy
 
     static void generateList(int size); // Generowanie listy o podanym rozmiarze wypelnionej losowymi wartosciami
 
     static int countList(); // Zwracanie liczby elementow w liscie
+
+    void testing(); // Pomiary czasu wykonywania operacji na liscie jednokierunkowej
 
 };
 

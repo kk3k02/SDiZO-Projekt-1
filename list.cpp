@@ -11,6 +11,7 @@
 #include "list.h"
 #include <iostream>
 #include <cstdlib>
+#include "test.h"
 
 using namespace std;
 
@@ -21,7 +22,6 @@ list::list(){ //konstruktor - wywoływany automatycznie przy tworzeniu obieku
     ptr = nullptr; // Ustawienie wskaznika na nastepny elelemnt na wartosc null
 }
 list::~list(){ //destrukor - wywoływany automatycznie przy usuwaniu
-    cout << "Zwolniono pamiec listy." << endl << endl;
 }
 
 void list::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
@@ -41,7 +41,7 @@ void list::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
         int data = 0;
 
         while (file >> data){
-            addElement(data, 1);
+            addElement(data, 1, -1);
         }
 
         file.close();
@@ -65,8 +65,8 @@ int list::IsValueInList(int value){ // Sprawdzanie czy podana wartosc znajduje s
     return -1;
 }
 
-void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosci
-    int index;
+void list::addElement(int val, int opt, int index){ // Dodawanie elementu o podanej wartosci
+    // W przypadku kiedy chcemy dodac element na poczatek lub koniec, ustawiamy index na wartosc -1
 
     if (opt == 1){ // Dodawanie na poczatek listy
         if (start == nullptr){ // Wariant kiedy lista jest pusta a chcemy dodac wartosc na jej poczatek
@@ -84,11 +84,7 @@ void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosc
         }
     }
 
-    if (opt == 3){ // Dodawanie na podany indeks
-        if (start != nullptr) display();
-
-        cout << "\n Podaj indeks: ";
-        cin >> index;
+    if (opt == 3 && index != -1){ // Dodawanie na podany indeks
 
         if (start == nullptr){ // Wariant kiedy lista jest pusta a chcemy dodac wartosc na indeks 0
             if (index == 0){
@@ -102,7 +98,7 @@ void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosc
             tmp = start;
 
             if (index == 0) {
-                addElement(val, 1); // Korzystanie z wczesniej zdefiniowanej metody do dodawania na poczatek listy
+                addElement(val, 1, -1); // Korzystanie z wczesniej zdefiniowanej metody do dodawania na poczatek listy
             } else {
                 for (int i = 0; i < index; i++) {
                     if (i == (index-1)){
@@ -122,26 +118,7 @@ void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosc
     }
 
     if (opt == 2){ // Dodawanie na koniec listy
-        // Wariant kiedy lista jest pusta, wtedy dodajemy 1 element, ktory jest poczatkiem i koncem
-        if (start == nullptr){
-            start = new list;
-            start -> value = val;
-        } else{
-            list *tmp, *element;
-            tmp = start;
-            element = new list;
-
-            for (int i = 0; i < countList(); i++) {
-                if (i == (countList()-1)){
-                    tmp -> ptr = element;
-                    element -> value = val;
-                } else{
-                    tmp = tmp -> ptr;
-                }
-            }
-        }
-
-        cout << "Dodano element do listy." << endl << endl;
+        addElement(val, 3, countList()); // Korzystanie z wczesniej zadeklarowanej metody
     }
 
     if(opt != 1 && opt != 2 && opt != 3){ // Wybranie opcji innej niz 1/2/3
@@ -149,7 +126,9 @@ void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosc
     }
 }
 
-void list::deleteElement(int opt){ // Usuwanie elementu z listy
+void list::deleteElement(int opt, int index){ // Usuwanie elementu z listy
+    // W przypadku kiedy chcemy usunac element z poczatku lub konca, ustawiamy index na wartosc -1
+
     if (start){
         list *tmp;
         tmp = start;
@@ -159,27 +138,13 @@ void list::deleteElement(int opt){ // Usuwanie elementu z listy
             delete tmp;
         }
         if (opt == 2){ // Usuwanie z konca listy
-            for (int i = 0; i < countList(); i++) {
-                if (i == (countList()-2)){
-                    delete tmp -> ptr;
-                    tmp -> ptr = nullptr;
-                } else{
-                    tmp = tmp -> ptr;
-                }
-            }
+            deleteElement(3, countList()); // Korzystanie z wczesniej zadeklarowanej funkcji
         }
-        if (opt == 3){ // Usuwanie z miejsca o podanym indeksie
-            int index = 0; // Zmienna do okreslania indeksu elementu listy
-
-            display();
-
-            cout << "\n Podaj indeks: ";
-            cin >> index;
-            cout << endl << endl;
+        if (opt == 3 && index != -1){ // Usuwanie z miejsca o podanym indeksie
 
             if (index >= 0 && index < countList()){
                 if (index == 0){ // Wariant, w ktorym usuwamy pierwszy element
-                    deleteElement(1); // Korzystamy z wczesniej zdefiniowanej metody do usuwania z poczatku listy
+                    deleteElement(1, -1); // Korzystamy z wczesniej zdefiniowanej metody do usuwania z poczatku listy
                 } else{
                     for (int i = 0; i < index; i++) {
                         if (i == (index-1)){
@@ -248,8 +213,6 @@ void list::generateList(int size){ // Generowanie listy o podanym rozmiarze wype
             tmp-> ptr = start;
             start = tmp;
         }
-
-        cout << "Lista zostala utworzona." << endl << endl;
     } else {
         cerr << "\nPodano bledny rozmiar." << endl << endl;
     }
@@ -268,4 +231,79 @@ int list::countList() { // Zwracanie liczby elementow w liscie
     }
 
     return counter;
+}
+
+void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokierunkowej
+    test myTest; // Deklaracja obiektu typu test
+    int testSize; // Rozmiar testowanej listy jednokierunkowej
+    int repeat = 15; // Ilosc wykonywanych testow
+
+    cout << "\n\nPodaj rozmiar listy: ";
+    cin >> testSize;
+
+    if (testSize > 0) {
+        // DODAWANIE
+
+        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+
+        for (int i = 0; i < repeat; i++) { // Dodawanie na poczatek listy
+            generateList(testSize);
+            myTest.start("[Lista jednokierunkowa][Dodawanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
+            addElement(rand(), 1, -1);
+            myTest.end();
+        }
+        cout << "\n[Dodawanie elementu na poczatek listy jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Dodawanie do polowy listy
+            generateList(testSize);
+            myTest.start("[Lista jednokierunkowa][Dodawanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
+            addElement(rand(), 3, testSize/2);
+            myTest.end();
+        }
+        cout << "\n[Dodawanie elementu w dowolne miejsce listy jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Dodawanie na koniec listy
+            generateList(testSize);
+            myTest.start("[Lista jednokierunkowa][Dodawanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
+            addElement(rand(), 2, -1);
+            myTest.end();
+        }
+        cout << "\n[Dodawanie elementu na koniec listy jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
+
+
+
+        // USUWANIE
+
+        for (int i = 0; i < repeat; i++) { // Usuwanie z poczatku listy
+            generateList(testSize);
+            myTest.start("[Lista jednokierunkowa][Usuwanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
+            deleteElement(1, -1);
+            myTest.end();
+        }
+        cout << "\n[Usuwanie elementu z poczatku listy jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Usuwanie z polowy listy
+            generateList(testSize);
+            myTest.start("[Lista jednokierunkowa][Usuwanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
+            deleteElement(3, testSize/2);
+            myTest.end();
+        }
+        cout << "\n[Usuwanie elementu z dowolnego miejsca listy jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Usuwanie z konca listy
+            generateList(testSize);
+            myTest.start("[Lista jednokierunkowa][Usuwanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
+            deleteElement(2, -1);
+            myTest.end();
+        }
+        cout << "\n[Usuwanie elementu z konca listy jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
+    } else{
+        cerr << "\nPodano bledny rozmiar tablicy." << endl << endl;
+    }
 }
