@@ -25,7 +25,6 @@ table::table() //konstruktor - wywoływany automatycznie przy tworzeniu obieku
 table::~table() //destrukor - wywływany automatycznie przy usuwaniu obiektu
 {
     delete[] tab; // Usuwanie tablicy dynamicznej
-    cout << "Zwolniono pamiec tablicy dynamicznej \n" << endl << endl;
 }
 
 void table::loadFromFile(const string& FileName) // Wczytywanie danych z pliku
