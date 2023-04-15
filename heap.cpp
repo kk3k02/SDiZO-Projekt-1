@@ -28,6 +28,11 @@ void heap::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
     ifstream file(FileName);
 
     if (file.is_open()){
+        if (size > 0){ // Usuwanie starej tablicy z kopcem
+            delete[] tab;
+            size = 0;
+        }
+
         int data = 0;
 
         while (file >> data){
@@ -129,7 +134,6 @@ void heap::generateHeap(int sizeToGenerate){ // Generowanie kopca binarnego o po
 }
 
 void heap::repairHeap(int option){ // Naprawianie struktury, tak aby spelniala warunki kopca binarnego
-    // TODO NAPRAWA KOPCA
     // Opcja [1] to naprawianie po dodawaniu elementu jako ostatni lisc
     // Opcja [2] to naprawianie po usuwaniu korzenia
 
