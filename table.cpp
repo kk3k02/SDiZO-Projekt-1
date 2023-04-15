@@ -12,6 +12,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include "test.h"
 
 using namespace std;
 
@@ -134,8 +135,6 @@ void table::deleteFromTable(int index) // Usuwanie elementu o podanym indeksie z
             }
 
             delete buf; // Usuwanie tablicy tymczasowej
-
-            cout << "Element zostal usuniety." << endl << endl;
         }
     } else {
         cerr << "Tablica jest pusta." << endl << endl;
@@ -166,9 +165,82 @@ void table::generateTable(int size) // Generowanie tablicy o okreslonym rozmiarz
         for (int i = 0; i < size; i++) { // Wypelnianie tablicy losowymi liczbami
             tab[i] = rand();
         }
-
-        cout << "Tablica dynamiczna zostala utworzona." << endl << endl;
     } else {
         cerr << "Podany rozmiar jest nieprawidlowy." << endl << endl;
+    }
+}
+
+void table::testing(){ // Pomiary czasu wykonywania operacji na tablicy dynamicznej
+    test myTest; // Deklaracja obiektu typu test
+    int testSize; // Rozmiar testowanej tablicy dynamicznej
+    int repeat = 15; // Ilosc wykonywanych testow
+
+    cout << "\n\nPodaj rozmiar tablicy: ";
+    cin >> testSize;
+
+    if (testSize > 0){
+        // DODAWANIE
+
+        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+
+        for (int i = 0; i < repeat; i++) { // Dodawanie losowego elementu na poczatek tablicy
+            generateTable(testSize);
+            myTest.start("[Tablica Dynamiczna][Dodawanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
+            addValue(0, rand());
+            myTest.end();
+        }
+        cout << "\n[Dodawanie elementu na poczatek tablicy dynamicznej]\n";
+        myTest.saveToFile("table_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Dodawanie losowego elementu na indeks rowny polowie ilosci elementow
+            generateTable(testSize);
+            myTest.start("[Tablica Dynamiczna][Dodawanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
+            addValue(testSize/2, rand());
+            myTest.end();
+        }
+        cout << "\n[Dodawanie elementu na dowolne miejsce w tablicy dynamicznej]\n";
+        myTest.saveToFile("table_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Dodawanie losowego elementu na koniec tablicy
+            generateTable(testSize);
+            myTest.start("[Tablica Dynamiczna][Dodawanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
+            addValue(cnt, rand());
+            myTest.end();
+        }
+        cout << "\n[Dodawanie elementu na koniec tablicy dynamicznej]\n";
+        myTest.saveToFile("table_test.txt");
+
+
+
+        // USUWANIE
+
+        for (int i = 0; i < repeat; i++) { // Usuwanie  elementu z poczatku tablicy
+            generateTable(testSize);
+            myTest.start("[Tablica Dynamiczna][Usuwanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
+            deleteFromTable(0);
+            myTest.end();
+        }
+        cout << "\n[Usuwanie elementu z poczatku tablicy dynamicznej]\n";
+        myTest.saveToFile("table_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Usuwanie  elementu z polowy tablicy
+            generateTable(testSize);
+            myTest.start("[Tablica Dynamiczna][Usuwanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
+            deleteFromTable(testSize/2);
+            myTest.end();
+        }
+        cout << "\n[Usuwanie elementu dowolnego miejsca tablicy dynamicznej]\n";
+        myTest.saveToFile("table_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Usuwanie  elementu z konca tablicy
+            generateTable(testSize);
+            myTest.start("[Tablica Dynamiczna][Usuwanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
+            deleteFromTable(cnt-1);
+            myTest.end();
+        }
+        cout << "\n[Usuwanie elementu z konca tablicy dynamicznej]\n";
+        myTest.saveToFile("table_test.txt");
+    } else{
+        cerr << "\nPodano bledny rozmiar tablicy." << endl << endl;
     }
 }

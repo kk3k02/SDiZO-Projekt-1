@@ -16,17 +16,18 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include "test.h"
 
 using namespace std;
 
 class table
 {
     int *tab; // Wskaznik typu int na tablice dynamiczna
-    int cnt; //ilość elementów w tablicy
+    int cnt; // Ilość elementów w tablicy
 public:
 
-    table(); //konstruktor - wywoływany automatycznie przy tworzeniu obieku
-    ~table(); //destrukor - wywływany automatycznie przy usuwaniu obiektu
+    table(); // Konstruktor - wywoływany automatycznie przy tworzeniu obieku
+    ~table(); // Destrukor - wywoływany automatycznie przy usuwaniu obiektu
 
     void loadFromFile(const string& FileName); // Wczytywanie danych z pliku
 
@@ -39,6 +40,8 @@ public:
     void display(); // Wyswietlanie wszystkich elementow tablicy
 
     void generateTable(int size); // Generowanie tablicy o okreslonym rozmiarze z losowymi wartosciami
+
+    void testing(); // Pomiary czasu wykonywania operacji na tablicy dynamicznej
 
 };
 
