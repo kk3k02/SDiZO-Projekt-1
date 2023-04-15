@@ -28,6 +28,16 @@ void list::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
     ifstream file(FileName);
 
     if (file.is_open()){
+        if (start != nullptr){ // Usuwanie starej listy
+            list *tmp;
+
+            while (start){
+                tmp = start -> ptr;
+                delete start;
+                start = tmp;
+            }
+        }
+
         int data = 0;
 
         while (file >> data){
@@ -221,6 +231,16 @@ void list::display(){ // Wyswietlanie wszystkich elementow listy
 void list::generateList(int size){ // Generowanie listy o podanym rozmiarze wypelnionej losowymi wartosciami
 
     if (size > 0){
+
+        if (start != nullptr){ // Usuwanie starej listy
+            list *tmp;
+
+            while (start){
+                tmp = start -> ptr;
+                delete start;
+                start = tmp;
+            }
+        }
 
         srand(time(nullptr)); // Ustawianie maszyny generujacej liczby pseudolosowe
 
