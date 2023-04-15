@@ -82,8 +82,6 @@ void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosc
             start -> value = val;
             start -> ptr = tmp;
         }
-
-        cout << "Dodano element do listy." << endl << endl;
     }
 
     if (opt == 3){ // Dodawanie na podany indeks
@@ -96,7 +94,6 @@ void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosc
             if (index == 0){
                 start = new list;
                 start -> value = val;
-                cout << "Dodano element do listy." << endl << endl;
             } else{
                 cerr << "\nBrak elementow w liscie." << endl << endl;
             }
@@ -121,7 +118,6 @@ void list::addElement(int val, int opt){ // Dodawanie elementu o podanej wartosc
                     }
                 }
             }
-            cout << "Dodano element do listy." << endl << endl;
         }
     }
 
