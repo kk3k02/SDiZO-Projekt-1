@@ -41,7 +41,7 @@ public:
 
     static int countList(); // Zwracanie liczby elementow w liscie
 
-    void testing(); // Pomiary czasu wykonywania operacji na liscie jednokierunkowej
+    static void testing(); // Pomiary czasu wykonywania operacji na liscie jednokierunkowej
 
 };
 
