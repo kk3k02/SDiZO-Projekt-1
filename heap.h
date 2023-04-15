@@ -37,6 +37,8 @@ public:
     void generateHeap(int sizeToGenerate); // Generowanie kopca binarnego o podanym rozmiarze
 
     void repairHeap(int option); // Naprawianie struktury, tak aby spelniala warunki kopca binarnego
+
+    void testing(); // Testowanie zloznosci obliczeniowej kopca binarnego
 };
 
 

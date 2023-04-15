@@ -9,8 +9,8 @@
  */
 
 #include "heap.h"
+#include "test.h"
 #include <iostream>
-#include <fstream>
 
 using namespace std;
 
@@ -21,7 +21,6 @@ heap::heap() { // Konstruktor kopca binarnego
 
 heap::~heap() { // Destruktor kopca binarnego
     delete[] tab;
-    cout << "Pamiec kopca zostala zwolniona." << endl << endl;
 }
 
 void heap::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
@@ -126,8 +125,6 @@ void heap::generateHeap(int sizeToGenerate){ // Generowanie kopca binarnego o po
         for (int i = 0; i < sizeToGenerate; i++) { // Wypelnianie tablicy losowymi liczbami
             push(rand());
         }
-
-        cout << "Kopiec zostal utworzony." << endl << endl;
     } else {
         cerr << "Podany rozmiar jest nieprawidlowy." << endl << endl;
     }
@@ -188,16 +185,51 @@ void heap::repairHeap(int option){ // Naprawianie struktury, tak aby spelniala w
                             parent = child2;
                         }
                     } else{
-                        cout << "Usunieto korzen." << endl << endl;
                         break; // Przerwanie petli, gdy warunek kopca binarnego jest spelniony
                     }
                 } else{
-                    cout << "Usunieto korzen." << endl << endl;
                     break; // Przerwanie petli, gdy wartosci wychodza poza rozmiar tablicy kopca
                 }
             }
         }
     } else{
         cerr << "\nKopiec jest pusty." << endl << endl;
+    }
+}
+
+void heap::testing(){ // Testowanie zloznosci obliczeniowej kopca binarnego
+    test myTest; // Deklaracja obiektu typu test
+    int testSize; // Rozmiar testowanej listy jednokierunkowej
+    int repeat = 15; // Ilosc wykonywanych testow
+
+    cout << "\n\nPodaj rozmiar kopca: ";
+    cin >> testSize;
+
+    if (testSize > 0){
+        // DODAWANIE
+
+        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+
+        for (int i = 0; i < repeat; i++) { // Dodawanie elementu do kopca binarnego
+            generateHeap(testSize);
+            myTest.start("[Kopiec Binarny][Dodawanie][Rozmiar: " + to_string(testSize) + "]");
+            push(rand());
+            myTest.end();
+        }
+        cout << "\n[Dodawanie elementu na do kopca binarnego]\n";
+        myTest.saveToFile("heap_test.txt");
+
+        // USUWANIE
+
+        for (int i = 0; i < repeat; i++) { // Usuwanie korzenia kopca binarnego
+            generateHeap(testSize);
+            myTest.start("[Kopiec Binarny][Usuwanie Korzenia][Rozmiar: " + to_string(testSize) + "]");
+            pop();
+            myTest.end();
+        }
+        cout << "\n[Usuwanie korzenia kopca binarnego]\n";
+        myTest.saveToFile("heap_test.txt");
+    } else{
+        cerr << "\nPodano bledny rozmiar tablicy." << endl << endl;
     }
 }
