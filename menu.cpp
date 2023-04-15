@@ -97,7 +97,6 @@ void menu_table() // Menu do zarzadzania tablica dynamiczna
     }
 }
 
-list myList; // Deklaracja nowej listy jednokierunkowej
 
 void menu_list() // Menu do zarzadzania lista jednokierunkowa
 {
@@ -113,7 +112,7 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\nPodaj nazwe pliku: ";
                 cin >> fileName;
                 cout << endl << endl;
-                myList.loadFromFile(fileName);
+                list::loadFromFile(fileName);
                 break;
             case 2: // Usuwanie elementu z listy
                 cout << "\nWybierz opcje usuwania elementu listy: \n";
@@ -127,7 +126,7 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                     cin >> index;
                 }
                 cout << endl << endl;
-                myList.deleteElement(option, index);
+                list::deleteElement(option, index);
                 break;
             case 3: // Dodawanie elementu do listy
                 cout << "\n Podaj wartosc elementu: ";
@@ -143,13 +142,13 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                     cin >> index;
                 }
                 cout << endl << endl;
-                myList.addElement(value,option, index);
+                list::addElement(value,option, index);
                 break;
             case 4: // Wyszukiwanie elementu w liscie
                 cout << "\nPodaj szukana wartosc: ";
                 cin >> value;
                 cout << endl << endl;
-                if (myList.IsValueInList(value) != -1) cout << "Podana wartosc znajduje sie w liscie.";
+                if (list::IsValueInList(value) != -1) cout << "Podana wartosc znajduje sie w liscie.";
                 else cout << "Podana wartosc NIE znajduje sie w liscie.";
                 cout << endl << endl;
                 break;
@@ -157,16 +156,16 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\nPodaj ilosc elementow listy do wygenerowania: ";
                 cin >> value;
                 cout << endl << endl;
-                myList.generateList(value);
+                list::generateList(value);
                 break;
             case 6: // Wyswietlanie wszystkich elementow listy
                 cout << endl << endl;
-                myList.display();
+                list::display();
                 cout << endl << endl;
                 break;
             case 7:
                 cout << "\n===POMIARY===\n";
-                myList.testing();
+                list::testing();
                 cout << endl << endl;
                 break;
             case 0:
@@ -226,8 +225,8 @@ void menu_heap() // Menu do zarzadzania kopcem
                 cout << endl << endl;
                 break;
             case 7:
-                cout << "\nPOMIARY";
-                // TODO TUTAJ FUNKCJA DO TESTOWNIA LISTY
+                cout << "\n===POMIARY===\n";
+                myHeap.testing();
                 cout << endl << endl;
                 break;
             case 0:
