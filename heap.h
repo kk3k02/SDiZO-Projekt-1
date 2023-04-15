@@ -1,7 +1,7 @@
 /*
  *  Autor: Jakub Jakubowicz
  *  Data: Kwiecien 2023
- *  Plik: head.h
+ *  Plik: heap.h
  *
  * Opis: Klasa definiujaca
  * funkcje pozwalajace na dodawanie, usuwanie,

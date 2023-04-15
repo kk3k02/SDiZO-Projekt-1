@@ -1,7 +1,7 @@
 /*
  *  Autor: Jakub Jakubowicz
  *  Data: Kwiecien 2023
- *  Plik: head.cpp
+ *  Plik: heap.cpp
  *
  * Opis: Klasa definiujaca kopiec binarny
  * oraz funkcje pozwalajace na dodawanie, usuwanie,
