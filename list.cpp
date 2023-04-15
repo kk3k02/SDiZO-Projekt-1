@@ -20,7 +20,7 @@ list::list(){ //konstruktor - wywoływany automatycznie przy tworzeniu obieku
     value = 0; // Ustawienie wartosci poczatkowej elementu listy na 0
     ptr = nullptr; // Ustawienie wskaznika na nastepny elelemnt na wartosc null
 }
-list::~list(){ //destrukor - wywływany automatycznie przy usuwaniu obiektu
+list::~list(){ //destrukor - wywoływany automatycznie przy usuwaniu
     cout << "Zwolniono pamiec listy." << endl << endl;
 }
 
