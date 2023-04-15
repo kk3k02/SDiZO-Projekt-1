@@ -20,6 +20,11 @@ using namespace  std;
 
 class test {
     float *results; // Tablica sluzaca do przechowywania wynikow pomiaru
+    float avg; // Wartosc srednia pomiarow
+    int cnt; // Zmienna do przechowywania ilosci elementow w tablicy wynikow
+    long long int startTime; // Zmienna do przechowywania czasu startu pomiaru
+    long long int frequency; // Zmienna sluzaca do przechowywania czestotliwosci
+    string testName; // Zmienna przechowywujaca nazwe testu
 
 public:
 
@@ -29,11 +34,13 @@ public:
 
     long long int read_QPC(); // Pomiar czasu
 
-    void start(); // Rozpoczecie pomiaru czasu
+    void start(const string& message); // Rozpoczecie pomiaru czasu
 
     void end(); // Zakonczenie pomiaru czasu
 
     void saveToFile(const string& FileName);  // Zapisywanie wynikow do pliku
+
+    void display(); // Wyswietlanie zawartosci tablicy z wynikami
 };
 
 
