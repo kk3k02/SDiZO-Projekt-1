@@ -92,7 +92,7 @@ void heap::pop() { // Usuwanie korzenia kopca binarnego
         delete[] tab; // Usuwanie starej tablicy w celu stworzenia nowej o zwiekszonym rozmiarze
         tab = tmp;
 
-        repairHeap(2);
+        repairHeap(2); // Naprawa kopca po usuwaniu korzenia
 
     } else{
         cerr << "\nBrak elementow w kopcu binarnym." << endl << endl;
@@ -159,11 +159,41 @@ void heap::repairHeap(int option){ // Naprawianie struktury, tak aby spelniala w
                 }
             }
         } else if (option == 2){ // Naprawianie kopca po usuwaniu korzenia
-            int child1, child2; // Zmienne sluzace do przechowywania wartosci dzieci potomkow
+            int child1, child2; // Zmienne do przechowywania indeksow potomkow
+            int parent = 0; // Zmienna do przechowywania indeksu rodzica
+            int tmp; // Zmienna do przechowywania tymczasowej wartosci z kopca
 
+            while (1){ // Sprawdzanie warunkow kopca binarnego i naprawianie go
+                child1 = (2 * parent) + 1; // Ustawianie indeksu na nieparzystego potomka
+                child2 = child1 + 1; // Ustawianie indeksu na parzystego potomka
 
+                if (child1 < size && child2 < size){
+                    if ((tab[parent] < tab[child1]) || (tab[parent] < tab[child2])){
+
+                        tmp = tab[parent];
+
+                        if (tab[child1] > tab[child2]){ // Zamiana wartosci rodzica z 1 potomkiem
+                            tab[parent] = tab[child1];
+                            tab[child1] = tmp;
+
+                            parent = child1;
+                        } else{ // Zamiana wartosci rodzica z 2 potomkiem
+                            tab[parent] = tab[child2];
+                            tab[child2] = tmp;
+
+                            parent = child2;
+                        }
+                    } else{
+                        cout << "Usunieto korzen." << endl << endl;
+                        break; // Przerwanie petli, gdy warunek kopca binarnego jest spelniony
+                    }
+                } else{
+                    cout << "Usunieto korzen." << endl << endl;
+                    break; // Przerwanie petli, gdy wartosci wychodza poza rozmiar tablicy kopca
+                }
+            }
         }
     } else{
-        cerr << "Kopiec jest pusty." << endl << endl;
+        cerr << "\nKopiec jest pusty." << endl << endl;
     }
 }
