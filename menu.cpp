@@ -101,7 +101,7 @@ list myList; // Deklaracja nowej listy jednokierunkowej
 
 void menu_list() // Menu do zarzadzania lista jednokierunkowa
 {
-    int option = 1, value; // Wybor, indeks, wartosc/rozmiar
+    int option = 1, index = 0, value; // Wybor, indeks, wartosc/rozmiar
     string fileName; // Nazwa pliku do wczytywania danych
 
     while (option){
@@ -122,8 +122,12 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\n[3] - element o podanym indeksie";
                 cout << "\nWybor: ";
                 cin >> option;
+                if(option == 3){
+                    cout << "Podaj indeks: ";
+                    cin >> index;
+                }
                 cout << endl << endl;
-                myList.deleteElement(option);
+                myList.deleteElement(option, index);
                 break;
             case 3: // Dodawanie elementu do listy
                 cout << "\n Podaj wartosc elementu: ";
@@ -134,8 +138,12 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\n[3] - element o podanym indeksie";
                 cout << "\nWybor: ";
                 cin >> option;
+                if(option == 3){
+                    cout << "Podaj indeks: ";
+                    cin >> index;
+                }
                 cout << endl << endl;
-                myList.addElement(value,option);
+                myList.addElement(value,option, index);
                 break;
             case 4: // Wyszukiwanie elementu w liscie
                 cout << "\nPodaj szukana wartosc: ";
@@ -157,8 +165,8 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << endl << endl;
                 break;
             case 7:
-                cout << "\nPOMIARY";
-                // TODO TUTAJ FUNKCJA DO TESTOWNIA LISTY
+                cout << "\n===POMIARY===\n";
+                myList.testing();
                 cout << endl << endl;
                 break;
             case 0:
