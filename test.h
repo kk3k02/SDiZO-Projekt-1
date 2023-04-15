@@ -32,7 +32,7 @@ public:
 
     ~test(); // Destrukor - wywoływany automatycznie przy usuwaniu obiektu
 
-    long long int read_QPC(); // Pomiar czasu
+    static long long int read_QPC(); // Pomiar czasu
 
     void start(const string& message); // Rozpoczecie pomiaru czasu
 
@@ -40,7 +40,6 @@ public:
 
     void saveToFile(const string& FileName);  // Zapisywanie wynikow do pliku
 
-    void display(); // Wyswietlanie zawartosci tablicy z wynikami
 };
 
 
