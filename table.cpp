@@ -32,6 +32,11 @@ void table::loadFromFile(const string& FileName) // Wczytywanie danych z pliku
     ifstream file(FileName);
 
     if (file.is_open()){
+        if (cnt > 0){ // Usuwanie starej tablicy dynamicznej
+            delete[] tab;
+            cnt = 0;
+        }
+
         int data = 0;
 
         while (file >> data){
@@ -93,15 +98,11 @@ void table::addValue(int index, int value) // Dodawanie podanej wartosci na poda
 
         delete tab;
         tab = tmp;
-
-        cout << "Dodano element do tablicy dynamicznej." << endl << endl;
     } else{
         if (index == 0){ // Wariant, kiedy chcemy dodac pierwszy element (indeks 0)
             tab = new int[1];
             tab[0] = value;
             cnt++;
-
-            cout << "Dodano element do tablicy dynamicznej." << endl << endl;
         } else{ // Wariant, kiedy chcemy dodac wartosc na indeks nie istniejacej tablicy
             cerr << "Tablica jest pusta." << endl << endl;
         }
