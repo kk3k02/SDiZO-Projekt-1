@@ -15,7 +15,7 @@
 
 using namespace std;
 
-void displayMenu(string info) // Glowne menu programu
+void displayMenu(const string& info) // Glowne menu programu
 {
     cout << endl << endl;
     cout << info << endl;
@@ -85,7 +85,7 @@ void menu_table() // Menu do zarzadzania tablica dynamiczna
                 break;
             case 7: // Testowanie tablicy dynamicznej
                 cout << "\nPOMIARY";
-                // TUTAJ FUNKCJA DO TESTOWNIA TAB DYN.
+                // TODO TUTAJ FUNKCJA DO TESTOWNIA TAB DYN.
                 cout << endl << endl;
                 break;
             case 0:
@@ -101,7 +101,7 @@ list myList; // Deklaracja nowej listy jednokierunkowej
 
 void menu_list() // Menu do zarzadzania lista jednokierunkowa
 {
-    int option = 1, index, value; // Wybor, indeks, wartosc/rozmiar
+    int option = 1, value; // Wybor, indeks, wartosc/rozmiar
     string fileName; // Nazwa pliku do wczytywania danych
 
     while (option){
@@ -123,7 +123,7 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\nWybor: ";
                 cin >> option;
                 cout << endl << endl;
-                list::deleteElement(option);
+                myList.deleteElement(option);
                 break;
             case 3: // Dodawanie elementu do listy
                 cout << "\n Podaj wartosc elementu: ";
@@ -135,13 +135,13 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\nWybor: ";
                 cin >> option;
                 cout << endl << endl;
-                list::addElement(value,option);
+                myList.addElement(value,option);
                 break;
             case 4: // Wyszukiwanie elementu w liscie
                 cout << "\nPodaj szukana wartosc: ";
                 cin >> value;
                 cout << endl << endl;
-                if (list::IsValueInList(value) != -1) cout << "Podana wartosc znajduje sie w liscie.";
+                if (myList.IsValueInList(value) != -1) cout << "Podana wartosc znajduje sie w liscie.";
                 else cout << "Podana wartosc NIE znajduje sie w liscie.";
                 cout << endl << endl;
                 break;
@@ -149,16 +149,16 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\nPodaj ilosc elementow listy do wygenerowania: ";
                 cin >> value;
                 cout << endl << endl;
-                list::generateList(value);
+                myList.generateList(value);
                 break;
             case 6: // Wyswietlanie wszystkich elementow listy
                 cout << endl << endl;
-                list::display();
+                myList.display();
                 cout << endl << endl;
                 break;
             case 7:
                 cout << "\nPOMIARY";
-                // TUTAJ FUNKCJA DO TESTOWNIA LISTY
+                // TODO TUTAJ FUNKCJA DO TESTOWNIA LISTY
                 cout << endl << endl;
                 break;
             case 0:
@@ -176,7 +176,6 @@ void menu_heap() // Menu do zarzadzania kopcem
 {
     int option = 1, value; // Wybor, wartosc
     string fileName; // Nazwa pliku do wczytywania danych
-    char opt; // Opcja
 
     while (option){
         displayMenu("=====KOPIEC=====");
@@ -232,7 +231,7 @@ void menu_heap() // Menu do zarzadzania kopcem
     }
 }
 
-int main(int argc, char* argv[]) // Glowna funkcja main
+int main() // Glowna funkcja main
 {
 
     int option = 1;
