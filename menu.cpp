@@ -84,8 +84,8 @@ void menu_table() // Menu do zarzadzania tablica dynamiczna
                 cout << endl << endl;
                 break;
             case 7: // Testowanie tablicy dynamicznej
-                cout << "\nPOMIARY";
-                // TODO TUTAJ FUNKCJA DO TESTOWNIA TAB DYN.
+                cout << "\n===POMIARY===\n";
+                myTab.testing();
                 cout << endl << endl;
                 break;
             case 0:
