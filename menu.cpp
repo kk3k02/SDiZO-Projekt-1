@@ -125,6 +125,10 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                     cout << "Podaj indeks: ";
                     cin >> index;
                 }
+                if (option == 2){
+                    index = list::countList() - 1;
+                    option = 3;
+                }
                 cout << endl << endl;
                 list::deleteElement(option, index);
                 break;
