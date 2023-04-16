@@ -303,6 +303,28 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         }
         cout << "\n[Usuwanie elementu z konca listy jednokierunkowej]\n";
         myTest.saveToFile("list_test.txt");
+
+        // WYSZUKIWANIE ELEMENTU
+
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory znajduje sie w liscie
+            generateList(testSize);
+            deleteElement(1, -1);
+            addElement(1, 3, testSize/2);
+            myTest.start("[List jednokierunkowa][Wyszukiwanie/Sukces][Rozmiar: " + to_string(testSize) + "]");
+            IsValueInList(1);
+            myTest.end();
+        }
+        cout << "\n[Wyszukiwanie elementu, ktory znajduje sie w liscie jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory NIE znajduje sie w liscie
+            generateList(testSize);
+            myTest.start("[List jednokierunkowa][Wyszukiwanie/Brak Elementu][Rozmiar: " + to_string(testSize) + "]");
+            IsValueInList(rand()*rand());
+            myTest.end();
+        }
+        cout << "\n[Wyszukiwanie elementu, ktory NIE znajduje sie w liscie jednokierunkowej]\n";
+        myTest.saveToFile("list_test.txt");
     } else{
         cerr << "\nPodano bledny rozmiar tablicy." << endl << endl;
     }
