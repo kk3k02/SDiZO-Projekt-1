@@ -235,29 +235,29 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
 
         for (int i = 0; i < repeat; i++) { // Dodawanie na poczatek listy
             generateList(testSize);
-            myTest.start("[Lista jednokierunkowa][Dodawanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
+            myTest.start("[Lista dwukierunkowa][Dodawanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
             addElement(rand(), 0);
             myTest.end();
         }
-        cout << "\n[Dodawanie elementu na poczatek listy jednokierunkowej]\n";
+        cout << "\n[Dodawanie elementu na poczatek listy dwukierunkowej]\n";
         myTest.saveToFile("list_test.txt");
 
         for (int i = 0; i < repeat; i++) { // Dodawanie do polowy listy
             generateList(testSize);
-            myTest.start("[Lista jednokierunkowa][Dodawanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
+            myTest.start("[Lista dwukierunkowa][Dodawanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
             addElement(rand(), testSize/2);
             myTest.end();
         }
-        cout << "\n[Dodawanie elementu w dowolne miejsce listy jednokierunkowej]\n";
+        cout << "\n[Dodawanie elementu w dowolne miejsce listy dwukierunkowej]\n";
         myTest.saveToFile("list_test.txt");
 
         for (int i = 0; i < repeat; i++) { // Dodawanie na koniec listy
             generateList(testSize);
-            myTest.start("[Lista jednokierunkowa][Dodawanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
+            myTest.start("[Lista dwukierunkowa][Dodawanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
             addElement(rand(), countList());
             myTest.end();
         }
-        cout << "\n[Dodawanie elementu na koniec listy jednokierunkowej]\n";
+        cout << "\n[Dodawanie elementu na koniec listy dwukierunkowa]\n";
         myTest.saveToFile("list_test.txt");
 
 
@@ -266,29 +266,29 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
 
         for (int i = 0; i < repeat; i++) { // Usuwanie z poczatku listy
             generateList(testSize);
-            myTest.start("[Lista jednokierunkowa][Usuwanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
+            myTest.start("[Lista dwukierunkowa][Usuwanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
             deleteElement(0);
             myTest.end();
         }
-        cout << "\n[Usuwanie elementu z poczatku listy jednokierunkowej]\n";
+        cout << "\n[Usuwanie elementu z poczatku listy dwukierunkowej]\n";
         myTest.saveToFile("list_test.txt");
 
         for (int i = 0; i < repeat; i++) { // Usuwanie z polowy listy
             generateList(testSize);
-            myTest.start("[Lista jednokierunkowa][Usuwanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
+            myTest.start("[Lista dwukierunkowa][Usuwanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
             deleteElement(testSize/2);
             myTest.end();
         }
-        cout << "\n[Usuwanie elementu z dowolnego miejsca listy jednokierunkowej]\n";
+        cout << "\n[Usuwanie elementu z dowolnego miejsca listy dwukierunkowej]\n";
         myTest.saveToFile("list_test.txt");
 
         for (int i = 0; i < repeat; i++) { // Usuwanie z konca listy
             generateList(testSize);
-            myTest.start("[Lista jednokierunkowa][Usuwanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
+            myTest.start("[Lista dwukierunkowa][Usuwanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
             deleteElement(countList()-1);
             myTest.end();
         }
-        cout << "\n[Usuwanie elementu z konca listy jednokierunkowej]\n";
+        cout << "\n[Usuwanie elementu z konca listy dwukierunkowej]\n";
         myTest.saveToFile("list_test.txt");
 
         // WYSZUKIWANIE ELEMENTU
@@ -298,7 +298,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
             list *tmp;
             tmp = start;
 
-            for (int j = 0; j < countList(); j++) {
+            for (int j = 0; j < (countList()-1); j++) {
                 tmp = tmp -> next;
             }
             myTest.start("[List dwukierunkowa][Wyszukiwanie][Rozmiar: " + to_string(testSize) + "]");
