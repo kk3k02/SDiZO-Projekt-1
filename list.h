@@ -3,7 +3,7 @@
  * Data: Kwiecien 2023
  * Plik: list.h
  *
- * Opis: Klasa definiujaca liste jednoelementowa
+ * Opis: Klasa definiujaca liste dwukierunkowa
  * oraz funkcje pozwalajace na dodawanie, usuwanie,
  * wyswietlanie i wczytywanie elementow.
  */
@@ -21,7 +21,8 @@ using namespace std;
 class list {
 
     int value; // Zmienna typu int do przechowywania wartosci elementu listy
-    list *ptr; // Wskaznik na nastepny element listy
+    list *next; // Wskaznik na nastepny element listy
+    list *previous; // Wskaznik na poprzedni element listy
 public:
 
     list(); //konstruktor - wywoływany automatycznie przy tworzeniu obieku
@@ -31,9 +32,9 @@ public:
 
     static int IsValueInList(int value); // Sprawdzanie czy podana wartosc znajduje sie w liscie
 
-    static void addElement(int val, int opt, int index); // Dodawanie elementu o podanej wartosci
+    static void addElement(int val, int index); // Dodawanie elementu o podanej wartosci
 
-    static void deleteElement(int opt, int index); // Usuwanie elementu z listy
+    static void deleteElement(int index); // Usuwanie elementu z listy
 
     static void display(); // Wyswietlanie wszystkich elementow listy
 

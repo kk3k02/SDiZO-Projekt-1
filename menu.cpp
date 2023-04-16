@@ -121,16 +121,22 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\n[3] - element o podanym indeksie";
                 cout << "\nWybor: ";
                 cin >> option;
-                if(option == 3){
-                    cout << "Podaj indeks: ";
-                    cin >> index;
+                if (option == 1){
+                    list::deleteElement(0);
                 }
                 if (option == 2){
-                    index = list::countList() - 1;
-                    option = 3;
+                    list::deleteElement(list::countList()-1);
+                }
+                if (option == 3){
+                    cout << "\nPodaj indeks: ";
+                    cin >> index;
+                    if (index < list::countList()){
+                        list::deleteElement(index);
+                    } else{
+                        cerr << "Podano bledny indeks." << endl << endl;
+                    }
                 }
                 cout << endl << endl;
-                list::deleteElement(option, index);
                 break;
             case 3: // Dodawanie elementu do listy
                 cout << "\n Podaj wartosc elementu: ";
@@ -141,12 +147,22 @@ void menu_list() // Menu do zarzadzania lista jednokierunkowa
                 cout << "\n[3] - element o podanym indeksie";
                 cout << "\nWybor: ";
                 cin >> option;
-                if(option == 3){
-                    cout << "Podaj indeks: ";
+                if (option == 1){ // Dodawanie na poczatek listy
+                    list::addElement(value, 0);
+                }
+                if(option == 2){ // Dodawanie na koniec listy
+                    list::addElement(value, list::countList());
+                }
+                if (option == 3){
+                    cout << "\nPodaj indeks: ";
                     cin >> index;
+                    if (index <= list::countList()){
+                        list::addElement(value, index);
+                    } else{
+                        cerr << "Podano bledny indeks." << endl << endl;
+                    }
                 }
                 cout << endl << endl;
-                list::addElement(value,option, index);
                 break;
             case 4: // Wyszukiwanie elementu w liscie
                 cout << "\nPodaj szukana wartosc: ";

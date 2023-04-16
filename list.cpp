@@ -3,7 +3,7 @@
  * Data: Kwiecien 2023
  * Plik: list.cpp
  *
- * Opis: Klasa definiujaca liste jednoelementowa
+ * Opis: Klasa definiujaca liste dwukierunkowa
  * oraz funkcje pozwalajace na dodawanie, usuwanie,
  * wyswietlanie i wczytywanie elementow.
  */
@@ -19,7 +19,8 @@ static list *start = nullptr; // Wskaznik na poczatek listy
 
 list::list(){ //konstruktor - wywoływany automatycznie przy tworzeniu obieku
     value = 0; // Ustawienie wartosci poczatkowej elementu listy na 0
-    ptr = nullptr; // Ustawienie wskaznika na nastepny elelemnt na wartosc null
+    next = nullptr; // Ustawienie wskaznika na nastepny elelemnt na wartosc null
+    previous = nullptr; // Ustawienie wskaznika na nastepny elelemnt na wartosc null
 }
 list::~list(){ //destrukor - wywoływany automatycznie przy usuwaniu
 }
@@ -32,7 +33,7 @@ void list::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
             list *tmp;
 
             while (start){
-                tmp = start -> ptr;
+                tmp = start -> next;
                 delete start;
                 start = tmp;
             }
@@ -41,7 +42,7 @@ void list::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
         int data = 0;
 
         while (file >> data){
-            addElement(data, 1, -1);
+            addElement(data, 0);
         }
 
         file.close();
@@ -58,113 +59,104 @@ int list::IsValueInList(int value){ // Sprawdzanie czy podana wartosc znajduje s
 
     while (tmp){
         if(tmp -> value == value) return counter;
-        tmp = tmp -> ptr;
+        tmp = tmp -> next;
         counter++;
     }
 
     return -1;
 }
 
-void list::addElement(int val, int opt, int index){ // Dodawanie elementu o podanej wartosci
-    // W przypadku kiedy chcemy dodac element na poczatek lub koniec, ustawiamy index na wartosc -1
-
-    if (opt == 1){ // Dodawanie na poczatek listy
-        if (start == nullptr){ // Wariant kiedy lista jest pusta a chcemy dodac wartosc na jej poczatek
-            start = new list;
-            start -> value = val;
-        } else {
-            list *tmp;
-
-            tmp = start;
-
-            start = new list;
-
-            start -> value = val;
-            start -> ptr = tmp;
-        }
-    }
-
-    if (opt == 3 && index != -1){ // Dodawanie na podany indeks
-
-        if (start == nullptr){ // Wariant kiedy lista jest pusta a chcemy dodac wartosc na indeks 0
-            if (index == 0){
+void list::addElement(int val, int index){ // Dodawanie elementu o podanej wartosci
+    if (index <= countList()){
+        if (index == 0){ // Dodawanie elementu na poczatek listy
+            if (start == nullptr){
                 start = new list;
                 start -> value = val;
             } else{
-                cerr << "\nBrak elementow w liscie." << endl << endl;
+                list *tmp;
+                tmp = start;
+
+                start = new list;
+                start -> value = val;
+                start -> next = tmp;
+
+                tmp -> previous = start;
             }
-        } else{
-            list *tmp;
+        } else if(index == countList()){ // Dodawanie na koniec listy
+            list *tmp, *element;
             tmp = start;
 
-            if (index == 0) {
-                addElement(val, 1, -1); // Korzystanie z wczesniej zdefiniowanej metody do dodawania na poczatek listy
-            } else {
-                for (int i = 0; i < index; i++) {
-                    if (i == (index-1)){
-                        list *element;
-                        element = new list;
+            element = new list;
+            element -> value = val;
 
-                        element -> ptr = tmp -> ptr;
-                        element -> value = val;
-
-                        tmp -> ptr = element;
-                    } else{
-                        tmp = tmp -> ptr;
-                    }
+            for (int i = 0; i < index; i++) {
+                if (tmp -> next != nullptr){
+                    tmp = tmp -> next;
                 }
             }
+
+            tmp -> next = element;
+        } else { // Dodawanie w dowolne miejsce oprocz poczatku i konca listy
+            list *tmp, *element;
+            tmp = start;
+
+            element = new list;
+            element -> value = val;
+
+            for (int i = 0; i < index; i++) {
+                tmp = tmp -> next;
+            }
+
+            tmp -> previous -> next = element;
+            element -> next = tmp;
+            tmp -> previous = element;
         }
-    }
-
-    if (opt == 2){ // Dodawanie na koniec listy
-        addElement(val, 3, countList()); // Korzystanie z wczesniej zadeklarowanej metody
-    }
-
-    if(opt != 1 && opt != 2 && opt != 3){ // Wybranie opcji innej niz 1/2/3
-        cerr << "\nNieprawidlowy wybor." << endl << endl;
+    } else{
+        cerr << "Nieprawidlowy indeks." << endl << endl;
     }
 }
 
-void list::deleteElement(int opt, int index){ // Usuwanie elementu z listy
-    // W przypadku kiedy chcemy usunac element z poczatku lub konca, ustawiamy index na wartosc -1
+void list::deleteElement(int index){ // Usuwanie elementu z listy
+    if (index < countList() && start != nullptr){
+        if (index == 0){ // Usuwanie z poczatku listy
+            if (countList() > 1){
+                list *tmp;
+                tmp = start -> next;
 
-    if (start){
-        list *tmp;
-        tmp = start;
+                delete start;
 
-        if (opt == 1){ // Usuwanie z poczatku
-            start = start -> ptr;
+                start = tmp;
+                start -> previous = nullptr;
+            } else{
+                delete start;
+                start -> previous = nullptr;
+                start -> next = nullptr;
+            }
+        } else if (index == (countList()-1)){ // Usuwanie ostatniego elementu listy
+            list *tmp, *element;
+            tmp = start;
+
+            for (int i = 0; i < index-1; i++) {
+                tmp = tmp -> next;
+            }
+
+            delete tmp -> next;
+            tmp -> next = nullptr;
+        } else{ // Usuwanie dowolnego elementu oprocz pierwszego i ostatniego
+            list *tmp;
+            tmp = start;
+
+            for (int i = 0; i < index; ++i) {
+                tmp = tmp -> next;
+            }
+
+            tmp -> previous -> next = tmp -> next;
+            tmp -> next -> previous = tmp -> previous;
+
             delete tmp;
         }
-        if (opt == 2){ // Usuwanie z konca listy
-            deleteElement(3, countList()); // Korzystanie z wczesniej zadeklarowanej funkcji
-        }
-        if (opt == 3 && index != -1){ // Usuwanie z miejsca o podanym indeksie
-
-            if (index >= 0 && index < countList()){
-                if (index == 0){ // Wariant, w ktorym usuwamy pierwszy element
-                    deleteElement(1, -1); // Korzystamy z wczesniej zdefiniowanej metody do usuwania z poczatku listy
-                } else{
-                    for (int i = 0; i < index; i++) {
-                        if (i == (index-1)){
-                            list *del;
-                            del = tmp -> ptr;
-                            tmp -> ptr = del -> ptr;
-                            delete del;
-                        } else{
-                            tmp = tmp -> ptr;
-                        }
-                    }
-                }
-            }
-        }
-    } else {
-        cerr << "Lista jest pusta." << endl << endl;
-    }
-
-    if(opt != 1 && opt != 2 && opt != 3){ // Wybranie opcji innej niz 1/2/3
-        cerr << "\nNieprawidlowy wybor." << endl << endl;
+    } else{
+        cerr << "\nPodano bledny indeks." << endl << endl;
     }
 }
 
@@ -178,8 +170,8 @@ void list::display(){ // Wyswietlanie wszystkich elementow listy
 
         while (tmp){
             cout << "[" << counter << "] Wartosc: " << tmp -> value << "; Adres: " << tmp;
-            cout << "; Nastepny element: " << tmp -> ptr << endl << endl;
-            tmp = tmp -> ptr;
+            cout << "; Nastepny element: " << tmp -> next << endl << endl;
+            tmp = tmp -> next;
             counter++;
         }
 
@@ -197,7 +189,7 @@ void list::generateList(int size){ // Generowanie listy o podanym rozmiarze wype
             list *tmp;
 
             while (start){
-                tmp = start -> ptr;
+                tmp = start -> next;
                 delete start;
                 start = tmp;
             }
@@ -205,13 +197,8 @@ void list::generateList(int size){ // Generowanie listy o podanym rozmiarze wype
 
         srand(time(nullptr)); // Ustawianie maszyny generujacej liczby pseudolosowe
 
-        list *tmp; // Wskaznik typu list sluzacy do przechowywania tymczasowych danych
-
-        for (int i = 0; i < size; i++) {
-            tmp = new list;
-            tmp->value = rand();
-            tmp-> ptr = start;
-            start = tmp;
+        for (int i = 0; i < size; i++) { // Dodawanie losowych elementow do listy
+            addElement(rand(), 0);
         }
     } else {
         cerr << "\nPodano bledny rozmiar." << endl << endl;
@@ -227,7 +214,7 @@ int list::countList() { // Zwracanie liczby elementow w liscie
 
     while (tmp){
         counter++;
-        tmp = tmp -> ptr;
+        tmp = tmp -> next;
     }
 
     return counter;
@@ -249,7 +236,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Dodawanie na poczatek listy
             generateList(testSize);
             myTest.start("[Lista jednokierunkowa][Dodawanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
-            addElement(rand(), 1, -1);
+            addElement(rand(), 0);
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na poczatek listy jednokierunkowej]\n";
@@ -258,7 +245,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Dodawanie do polowy listy
             generateList(testSize);
             myTest.start("[Lista jednokierunkowa][Dodawanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
-            addElement(rand(), 3, testSize/2);
+            addElement(rand(), testSize/2);
             myTest.end();
         }
         cout << "\n[Dodawanie elementu w dowolne miejsce listy jednokierunkowej]\n";
@@ -267,7 +254,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Dodawanie na koniec listy
             generateList(testSize);
             myTest.start("[Lista jednokierunkowa][Dodawanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
-            addElement(rand(), 2, -1);
+            addElement(rand(), countList());
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na koniec listy jednokierunkowej]\n";
@@ -280,7 +267,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Usuwanie z poczatku listy
             generateList(testSize);
             myTest.start("[Lista jednokierunkowa][Usuwanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
-            deleteElement(1, -1);
+            deleteElement(0);
             myTest.end();
         }
         cout << "\n[Usuwanie elementu z poczatku listy jednokierunkowej]\n";
@@ -289,7 +276,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Usuwanie z polowy listy
             generateList(testSize);
             myTest.start("[Lista jednokierunkowa][Usuwanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
-            deleteElement(3, testSize/2);
+            deleteElement(testSize/2);
             myTest.end();
         }
         cout << "\n[Usuwanie elementu z dowolnego miejsca listy jednokierunkowej]\n";
@@ -298,7 +285,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Usuwanie z konca listy
             generateList(testSize);
             myTest.start("[Lista jednokierunkowa][Usuwanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
-            deleteElement(2, -1);
+            deleteElement(countList()-1);
             myTest.end();
         }
         cout << "\n[Usuwanie elementu z konca listy jednokierunkowej]\n";
@@ -306,26 +293,21 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
 
         // WYSZUKIWANIE ELEMENTU
 
-        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory znajduje sie w liscie
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory znajduje sie na koncu listy
             generateList(testSize);
-            deleteElement(1, -1);
-            addElement(1, 3, testSize/2);
-            myTest.start("[List jednokierunkowa][Wyszukiwanie/Sukces][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInList(1);
-            myTest.end();
-        }
-        cout << "\n[Wyszukiwanie elementu, ktory znajduje sie w liscie jednokierunkowej]\n";
-        myTest.saveToFile("list_test.txt");
+            list *tmp;
+            tmp = start;
 
-        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory NIE znajduje sie w liscie
-            generateList(testSize);
-            myTest.start("[List jednokierunkowa][Wyszukiwanie/Brak Elementu][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInList(rand()*rand());
+            for (int j = 0; j < countList(); j++) {
+                tmp = tmp -> next;
+            }
+            myTest.start("[List dwukierunkowa][Wyszukiwanie][Rozmiar: " + to_string(testSize) + "]");
+            IsValueInList(tmp -> value);
             myTest.end();
         }
-        cout << "\n[Wyszukiwanie elementu, ktory NIE znajduje sie w liscie jednokierunkowej]\n";
+        cout << "\n[Wyszukiwanie elementu, ktory znajduje sie w liscie dwukierunkowej (najbardziej niekorzystny przypadek)]\n";
         myTest.saveToFile("list_test.txt");
     } else{
-        cerr << "\nPodano bledny rozmiar tablicy." << endl << endl;
+        cerr << "\nPodano bledny rozmiar listy." << endl << endl;
     }
 }
