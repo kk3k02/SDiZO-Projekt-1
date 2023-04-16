@@ -229,6 +229,28 @@ void heap::testing(){ // Testowanie zloznosci obliczeniowej kopca binarnego
         }
         cout << "\n[Usuwanie korzenia kopca binarnego]\n";
         myTest.saveToFile("heap_test.txt");
+
+        // WYSZUKIWANIE ELEMENTU
+
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory NIE znajduje sie w kopcu binarnym
+            generateHeap(testSize);
+            myTest.start("[Kopiec Binarny][Wyszukiwanie/Brak Elementu][Rozmiar: " + to_string(testSize) + "]");
+            IsValueInHeap(rand() * rand());
+            myTest.end();
+        }
+        cout << "\n[Wyszukiwanie elementu, ktory NIE znajduje sie w kopcu binarnym]\n";
+        myTest.saveToFile("heap_test.txt");
+
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory  znajduje sie w kopcu binarnym
+            generateHeap(testSize);
+            pop();
+            push(1);
+            myTest.start("[Kopiec Binarny][Wyszukiwanie/Sukces][Rozmiar: " + to_string(testSize) + "]");
+            IsValueInHeap(1);
+            myTest.end();
+        }
+        cout << "\n[Wyszukiwanie elementu, ktory znajduje sie w kopcu binarnym]\n";
+        myTest.saveToFile("heap_test.txt");
     } else{
         cerr << "\nPodano bledny rozmiar tablicy." << endl << endl;
     }
