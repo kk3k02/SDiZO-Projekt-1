@@ -242,24 +242,14 @@ void table::testing(){ // Pomiary czasu wykonywania operacji na tablicy dynamicz
 
         // WYSZUKIWANIE ELEMENTU
 
-        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory znajduje sie w tablicy
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory znajduje sie na koncu tablicy
             generateTable(testSize);
-            myTest.start("[Tablica Dynamiczna][Wyszukiwanie/Sukces][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInTable(tab[testSize/2]);
+            myTest.start("[Tablica Dynamiczna][Wyszukiwanie][Rozmiar: " + to_string(testSize) + "]");
+            IsValueInTable(tab[testSize-1]);
             myTest.end();
         }
-        cout << "\n[Wyszukiwanie elementu, ktory znajduje sie w tablicy dynamicznej]\n";
+        cout << "\n[Wyszukiwanie elementu w tablicy dynamicznej (najbardziej niekorzystny przypadek)]\n";
         myTest.saveToFile("table_test.txt");
-
-        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory NIE znajduje sie w tablicy
-            generateTable(testSize);
-            myTest.start("[Tablica Dynamiczna][Wyszukiwanie/Brak Elementu][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInTable(rand()*rand());
-            myTest.end();
-        }
-        cout << "\n[Wyszukiwanie elementu, ktory NIE znajduje sie w tablicy dynamicznej]\n";
-        myTest.saveToFile("table_test.txt");
-
     } else{
         cerr << "\nPodano bledny rozmiar tablicy." << endl << endl;
     }
