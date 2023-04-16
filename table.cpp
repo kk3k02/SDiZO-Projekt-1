@@ -254,7 +254,7 @@ void table::testing(){ // Pomiary czasu wykonywania operacji na tablicy dynamicz
         for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory NIE znajduje sie w tablicy
             generateTable(testSize);
             myTest.start("[Tablica Dynamiczna][Wyszukiwanie/Brak Elementu][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInTable(tab[0] * testSize);
+            IsValueInTable(rand()*rand());
             myTest.end();
         }
         cout << "\n[Wyszukiwanie elementu, ktory NIE znajduje sie w tablicy dynamicznej]\n";
