@@ -42,7 +42,7 @@ void test::start(const string& message){ // Rozpoczecie pomiaru czasu
 void test::end(){ // Zakonczenie pomiaru czasu
     long long int elapsed; // Zmienna do przechowywania wyniku pomiaru
     elapsed = read_QPC() - startTime;
-    float result = (float)elapsed / frequency;
+    float result = (1000.0 * elapsed) / frequency;
 
 
     // Dodawanie wyniku do tablicy wynikow
@@ -73,10 +73,10 @@ void test::saveToFile(const string& FileName){ // Zapisywanie wynikow do pliku
 
     file.open(FileName, ios::in | ios::app);
 
-    file << testName << "\n";
+    file << testName + "[ms]" << "\n";
 
     for (int i = 0; i < cnt; i++) {
-        file << results[i] << "\n";
+        file << setprecision(2) << results[i] << "\n";
     }
 
     file << "AVG: " << avg / (float)cnt << endl;
