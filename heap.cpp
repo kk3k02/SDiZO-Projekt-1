@@ -270,7 +270,7 @@ void heap::testing(){ // Testowanie zloznosci obliczeniowej kopca binarnego
         for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory nie znajduje sie w kopcu
             generateHeap(testSize);
             myTest.start("[Kopiec Binarny][Wyszukiwanie][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInHeap(INT_MAX-1);
+            IsValueInHeap(INT_MAX);
             myTest.end();
         }
         cout << "\n[Wyszukiwanie elementu (najbardziej niekorzystny przypadek)]\n";
