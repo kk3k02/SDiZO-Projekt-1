@@ -216,8 +216,8 @@ void menu_heap() // Menu do zarzadzania kopcem
                 myHeap.loadFromFile(fileName);
                 break;
             case 2: // Usuwanie korzenia kopca binarnego
+                cout << endl << endl;
                 myHeap.pop();
-
                 break;
             case 3: // Dodawanie elementu do kopca binarnego
                 cout << "\n Podaj wartosc elementu: ";
