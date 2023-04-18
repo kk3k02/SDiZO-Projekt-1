@@ -123,9 +123,10 @@ void list::deleteElement(int index){ // Usuwanie elementu z listy
                 start = tmp;
                 start -> previous = nullptr;
             } else{
-                delete start;
                 start -> previous = nullptr;
                 start -> next = nullptr;
+                delete start;
+                start = nullptr;
             }
         } else if (index == (countList()-1)){ // Usuwanie ostatniego elementu listy
             list *tmp;
