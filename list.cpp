@@ -11,6 +11,7 @@
 #include "list.h"
 #include <iostream>
 #include <cstdlib>
+#include <random>
 #include "test.h"
 
 using namespace std;
@@ -68,48 +69,42 @@ int list::IsValueInList(int value){ // Sprawdzanie czy podana wartosc znajduje s
 
 void list::addElement(int val, int index){ // Dodawanie elementu o podanej wartosci
     if (index <= countList()){
-        if (index == 0){ // Dodawanie elementu na poczatek listy
-            if (start == nullptr){
-                start = new list;
-                start -> value = val;
-            } else{
-                list *tmp;
-                tmp = start;
+        if (index == 0) { // Dodawanie na poczatek listy
+            list *element = new list;
 
-                start = new list;
-                start -> value = val;
-                start -> next = tmp;
-
-                tmp -> previous = start;
-            }
-        } else if(index == countList()){ // Dodawanie na koniec listy
-            list *tmp, *element;
-            tmp = start;
-
-            element = new list;
             element -> value = val;
+            element -> next = start;
 
-            for (int i = 0; i < index; i++) {
-                if (tmp -> next != nullptr){
-                    tmp = tmp -> next;
-                }
+            if (start) {
+                start -> previous = element;
+            }
+
+            start = element;
+
+            return;
+        }
+
+        list *tmp = start;
+
+        int i = 0;
+
+        while (tmp && i < index - 1) {
+            tmp = tmp -> next;
+            i++;
+        }
+
+        if (tmp) {
+            list *element = new list;
+
+            element -> value = val;
+            element -> next = tmp -> next;
+            element -> previous = tmp;
+
+            if (tmp -> next) {
+                tmp -> next -> previous = element;
             }
 
             tmp -> next = element;
-        } else { // Dodawanie w dowolne miejsce oprocz poczatku i konca listy
-            list *tmp, *element;
-            tmp = start;
-
-            element = new list;
-            element -> value = val;
-
-            for (int i = 0; i < index; i++) {
-                tmp = tmp -> next;
-            }
-
-            tmp -> previous -> next = element;
-            element -> next = tmp;
-            tmp -> previous = element;
         }
     } else{
         cerr << "Nieprawidlowy indeks." << endl << endl;
@@ -133,7 +128,7 @@ void list::deleteElement(int index){ // Usuwanie elementu z listy
                 start -> next = nullptr;
             }
         } else if (index == (countList()-1)){ // Usuwanie ostatniego elementu listy
-            list *tmp, *element;
+            list *tmp;
             tmp = start;
 
             for (int i = 0; i < index-1; i++) {
@@ -195,10 +190,12 @@ void list::generateList(int size){ // Generowanie listy o podanym rozmiarze wype
             }
         }
 
-        srand(time(nullptr)); // Ustawianie maszyny generujacej liczby pseudolosowe
+        // Ustawianie maszyny generujacej liczby pseudolosowe z zakresu 0-(INT_MAX-1)
+        random_device seed;
+        uniform_int_distribution<int> randomInt(0, INT_MAX-1);
 
         for (int i = 0; i < size; i++) { // Dodawanie losowych elementow do listy
-            addElement(rand(), 0);
+            addElement(randomInt(seed), 0);
         }
     } else {
         cerr << "\nPodano bledny rozmiar." << endl << endl;
@@ -231,12 +228,14 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
     if (testSize > 0) {
         // DODAWANIE
 
-        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+        // Ustawianie maszyny generujacej liczby pseudolosowe z zakresu 0-(INT_MAX-1)
+        random_device seed;
+        uniform_int_distribution<int> randomInt(0, INT_MAX-1);
 
         for (int i = 0; i < repeat; i++) { // Dodawanie na poczatek listy
             generateList(testSize);
             myTest.start("[Lista dwukierunkowa][Dodawanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
-            addElement(rand(), 0);
+            addElement(randomInt(seed), 0);
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na poczatek listy dwukierunkowej]\n";
@@ -245,7 +244,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Dodawanie do polowy listy
             generateList(testSize);
             myTest.start("[Lista dwukierunkowa][Dodawanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
-            addElement(rand(), testSize/2);
+            addElement(randomInt(seed), testSize/2);
             myTest.end();
         }
         cout << "\n[Dodawanie elementu w dowolne miejsce listy dwukierunkowej]\n";
@@ -254,7 +253,7 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
         for (int i = 0; i < repeat; i++) { // Dodawanie na koniec listy
             generateList(testSize);
             myTest.start("[Lista dwukierunkowa][Dodawanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
-            addElement(rand(), countList());
+            addElement(randomInt(seed), countList());
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na koniec listy dwukierunkowa]\n";
@@ -293,16 +292,10 @@ void list::testing(){ // Pomiary czasu wykonywania operacji na liscie jednokieru
 
         // WYSZUKIWANIE ELEMENTU
 
-        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory znajduje sie na koncu listy
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory nie znajduje sie w liscie
             generateList(testSize);
-            list *tmp;
-            tmp = start;
-
-            for (int j = 0; j < (countList()-1); j++) {
-                tmp = tmp -> next;
-            }
             myTest.start("[List dwukierunkowa][Wyszukiwanie][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInList(tmp -> value);
+            IsValueInList(INT_MAX);
             myTest.end();
         }
         cout << "\n[Wyszukiwanie elementu, ktory znajduje sie w liscie dwukierunkowej (najbardziej niekorzystny przypadek)]\n";
