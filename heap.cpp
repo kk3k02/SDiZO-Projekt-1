@@ -11,6 +11,7 @@
 #include "heap.h"
 #include "test.h"
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -40,7 +41,7 @@ void heap::loadFromFile(const string& FileName){ // Wczytywanie danych z pliku
 
         file.close();
     } else{
-        cerr << "\nBlad otwierania pliku." << endl << endl;
+        cerr << "\n\nBlad otwierania pliku." << endl << endl;
     }
 }
 
@@ -99,17 +100,47 @@ void heap::pop() { // Usuwanie korzenia kopca binarnego
         repairHeap(2); // Naprawa kopca po usuwaniu korzenia
 
     } else{
-        cerr << "\nBrak elementow w kopcu binarnym." << endl << endl;
+        cerr << "\n\nBrak elementow w kopcu binarnym." << endl << endl;
     }
 }
 
 void heap::display(){ // Wyswietlanie kopca binarnego
-    if (size > 0){
-        for (int i = 0; i < size; i++) {
-            cout << "[" << i << "]: " << tab[i] << endl;
+    string space = "   ";    // Odstep 3 spacji
+    int height = 0;
+    int squared2;
+
+    for (squared2 = 1; squared2 - 1 < size; squared2 = squared2 * 2){
+        height++;
+    }
+
+    squared2 = 1;
+
+    cout << "Aktualny stan kopca:" << endl;
+
+    if (tab != nullptr && size > 0){
+        for (int i = 0; i < size; i++){
+            if (i+1 == squared2){
+                cout << endl;
+                height--;
+                squared2 = squared2 * 2;
+
+                for (int l = (int)(pow(2, height)); l > 0; l--){
+                    cout << space;
+                }
+            }
+            else{
+                for (int l = (int)(pow(2, height + 1)); l > 0; l--){
+                    cout << space;
+                }
+            }
+
+            cout << tab[i];
         }
-    } else{
-        cerr << "\nBrak elementow w kopcu." << endl << endl;
+
+        cout << endl << endl;
+    }
+    else{
+        cerr << "\n\nBrak elementow w kopcu binarnym." << endl << endl;
     }
 }
 
@@ -120,10 +151,12 @@ void heap::generateHeap(int sizeToGenerate){ // Generowanie kopca binarnego o po
             size = 0; // Ustawianie liczby elementow kopca na 0
         }
 
-        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+        // Ustawianie maszyny generujacej liczby pseudolosowe z zakresu 0-(INT_MAX-1)
+        random_device seed;
+        uniform_int_distribution<int> randomInt(0, INT_MAX-1);
 
         for (int i = 0; i < sizeToGenerate; i++) { // Wypelnianie tablicy losowymi liczbami
-            push(rand());
+            push(randomInt(seed));
         }
     } else {
         cerr << "Podany rozmiar jest nieprawidlowy." << endl << endl;
@@ -193,7 +226,7 @@ void heap::repairHeap(int option){ // Naprawianie struktury, tak aby spelniala w
             }
         }
     } else{
-        cerr << "\nKopiec jest pusty." << endl << endl;
+        cerr << "\n\nKopiec jest pusty." << endl << endl;
     }
 }
 
@@ -208,12 +241,14 @@ void heap::testing(){ // Testowanie zloznosci obliczeniowej kopca binarnego
     if (testSize > 0){
         // DODAWANIE
 
-        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+        // Ustawianie maszyny generujacej liczby pseudolosowe z zakresu 0-(INT_MAX-1)
+        random_device seed;
+        uniform_int_distribution<int> randomInt(0, INT_MAX-1);
 
         for (int i = 0; i < repeat; i++) { // Dodawanie elementu do kopca binarnego
             generateHeap(testSize);
             myTest.start("[Kopiec Binarny][Dodawanie][Rozmiar: " + to_string(testSize) + "]");
-            push(rand());
+            push(randomInt(seed));
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na do kopca binarnego]\n";
@@ -232,10 +267,10 @@ void heap::testing(){ // Testowanie zloznosci obliczeniowej kopca binarnego
 
         // WYSZUKIWANIE ELEMENTU
 
-        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, przeszukujac cala tablice kopca binarnego
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory nie znajduje sie w kopcu
             generateHeap(testSize);
             myTest.start("[Kopiec Binarny][Wyszukiwanie][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInHeap(tab[size-1]);
+            IsValueInHeap(INT_MAX-1);
             myTest.end();
         }
         cout << "\n[Wyszukiwanie elementu (najbardziej niekorzystny przypadek)]\n";
