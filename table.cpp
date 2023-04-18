@@ -11,7 +11,7 @@
 #include "table.h"
 #include <iostream>
 #include <cstdlib>
-#include <ctime>
+#include <random>
 #include "test.h"
 
 using namespace std;
@@ -45,7 +45,7 @@ void table::loadFromFile(const string& FileName) // Wczytywanie danych z pliku
 
         file.close();
     } else{
-        cerr << "\nBlad otwierania pliku." << endl << endl;
+        cerr << "\n\nBlad otwierania pliku." << endl << endl;
     }
 }
 
@@ -104,7 +104,7 @@ void table::addValue(int index, int value) // Dodawanie podanej wartosci na poda
             tab[0] = value;
             cnt++;
         } else{ // Wariant, kiedy chcemy dodac wartosc na indeks nie istniejacej tablicy
-            cerr << "Tablica jest pusta." << endl << endl;
+            cerr << "\n\nTablica jest pusta." << endl << endl;
         }
     }
 }
@@ -136,7 +136,7 @@ void table::deleteFromTable(int index) // Usuwanie elementu o podanym indeksie z
             delete buf; // Usuwanie tablicy tymczasowej
         }
     } else {
-        cerr << "Tablica jest pusta." << endl << endl;
+        cerr << "\n\nTablica jest pusta." << endl << endl;
     }
 }
 
@@ -159,13 +159,15 @@ void table::generateTable(int size) // Generowanie tablicy o okreslonym rozmiarz
 
         tab = new int[size]; // Tworzenie tablicy dynamicznej o podanym rozmiarze
 
-        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+        // Ustawianie maszyny generujacej liczby pseudolosowe z zakresu 0-(INT_MAX-1)
+        random_device seed;
+        uniform_int_distribution<int> randomInt(0, INT_MAX-1);
 
         for (int i = 0; i < size; i++) { // Wypelnianie tablicy losowymi liczbami
-            tab[i] = rand();
+            tab[i] = randomInt(seed);
         }
     } else {
-        cerr << "Podany rozmiar jest nieprawidlowy." << endl << endl;
+        cerr << "\n\nPodany rozmiar jest nieprawidlowy." << endl << endl;
     }
 }
 
@@ -180,12 +182,14 @@ void table::testing(){ // Pomiary czasu wykonywania operacji na tablicy dynamicz
     if (testSize > 0){
         // DODAWANIE
 
-        srand(time(nullptr)); // Konfiguracja maszyny losujacej liczby calkowite
+        // Ustawianie maszyny generujacej liczby pseudolosowe z zakresu 0-(INT_MAX-1)
+        random_device seed;
+        uniform_int_distribution<int> randomInt(0, INT_MAX-1);
 
         for (int i = 0; i < repeat; i++) { // Dodawanie losowego elementu na poczatek tablicy
             generateTable(testSize);
             myTest.start("[Tablica Dynamiczna][Dodawanie/Poczatek][Rozmiar: " + to_string(testSize) + "]");
-            addValue(0, rand());
+            addValue(0, randomInt(seed));
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na poczatek tablicy dynamicznej]\n";
@@ -194,7 +198,7 @@ void table::testing(){ // Pomiary czasu wykonywania operacji na tablicy dynamicz
         for (int i = 0; i < repeat; i++) { // Dodawanie losowego elementu na indeks rowny polowie ilosci elementow
             generateTable(testSize);
             myTest.start("[Tablica Dynamiczna][Dodawanie/Polowa][Rozmiar: " + to_string(testSize) + "]");
-            addValue(testSize/2, rand());
+            addValue(testSize/2, randomInt(seed));
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na dowolne miejsce w tablicy dynamicznej]\n";
@@ -203,7 +207,7 @@ void table::testing(){ // Pomiary czasu wykonywania operacji na tablicy dynamicz
         for (int i = 0; i < repeat; i++) { // Dodawanie losowego elementu na koniec tablicy
             generateTable(testSize);
             myTest.start("[Tablica Dynamiczna][Dodawanie/Koniec][Rozmiar: " + to_string(testSize) + "]");
-            addValue(cnt, rand());
+            addValue(cnt, randomInt(seed));
             myTest.end();
         }
         cout << "\n[Dodawanie elementu na koniec tablicy dynamicznej]\n";
@@ -242,10 +246,10 @@ void table::testing(){ // Pomiary czasu wykonywania operacji na tablicy dynamicz
 
         // WYSZUKIWANIE ELEMENTU
 
-        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu, ktory znajduje sie na koncu tablicy
+        for (int i = 0; i < repeat; i++) { // Wyszukiwanie elementu spoza tablicy
             generateTable(testSize);
             myTest.start("[Tablica Dynamiczna][Wyszukiwanie][Rozmiar: " + to_string(testSize) + "]");
-            IsValueInTable(tab[testSize-1]);
+            IsValueInTable(INT_MAX);
             myTest.end();
         }
         cout << "\n[Wyszukiwanie elementu w tablicy dynamicznej (najbardziej niekorzystny przypadek)]\n";
