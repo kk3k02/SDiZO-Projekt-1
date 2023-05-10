@@ -3,7 +3,7 @@ Projekt na studia (Struktury Danych i Złożoność Obliczeniowa).
 
 Implementacja struktur takich jak:
 -tablica dynamiczna,
--lista jednokierunkowa
+-lista dwukierunkowa
 -kopiec binarny
 
 oraz testowanie ich wydajność przy dodawaniu/usuwaniu/wyszukiwaniu.
