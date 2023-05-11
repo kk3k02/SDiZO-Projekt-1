@@ -1,9 +1,8 @@
 # SDiZO-Projekt-1
-Projekt na studia (Struktury Danych i Złożoność Obliczeniowa).
+Project for studies (Data Structures and Computational Complexity). 
+Implementation of structures such as: 
+-dynamic array, 
+-one-way list 
+-binary heap, 
 
-Implementacja struktur takich jak:
--tablica dynamiczna,
--lista dwukierunkowa
--kopiec binarny
-
-oraz testowanie ich wydajność przy dodawaniu/usuwaniu/wyszukiwaniu.
+and testing their performance when adding/removing/searching.
