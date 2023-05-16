@@ -5,4 +5,4 @@ Implementation of structures such as:
 -one-way list 
 -binary heap, 
 
-and testing their performance when adding/removing/searching.
+and testing their performance during adding/removing/searching.
